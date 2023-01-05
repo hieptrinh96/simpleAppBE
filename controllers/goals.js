@@ -8,9 +8,9 @@ const create = async (req, res) => {
     const profile = await Profile.findByIdAndUpdate(
       req.user.profile,
       { $push: { goals: goal}},
-      { new: true}
+      { new: true }
     )
-    goals.owner = profile
+    goal.owner = profile
     res.status(201).json(goal)
   } catch(error) {
     console.log(error)
