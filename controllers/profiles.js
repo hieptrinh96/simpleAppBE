@@ -1,5 +1,6 @@
 import { Profile } from '../models/profile.js'
 import { v2 as cloudinary } from 'cloudinary'
+import { Goal } from '../models/goal.js'
 
 function index(req, res) {
   Profile.find({})
@@ -29,4 +30,26 @@ function addPhoto(req, res) {
   })
 }
 
-export { index, addPhoto }
+function showMyGoals(req, res) {
+  Profile.find({}).then((profiles) => {
+    Profile.findById(req.params.id).then((profile) => {
+      Goal.find({ owner: profile._id}).then((goal) => {
+        res.status(200).json(goal)
+      })
+      .catch((error) => {
+        console.log(error)
+        res.status(500).json(error)
+      })
+    })
+    .catch((error) => {
+      console.log(error)
+      res.status(500).json(error)
+    })
+  })
+}
+
+export { 
+  index, 
+  addPhoto,
+  showMyGoals
+}
